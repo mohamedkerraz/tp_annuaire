@@ -8,24 +8,31 @@ au format : `Nom → Numéro de téléphone`.
 Chaque contact est stocké dans une map Go (`type: map[name]phoneNumber`).
 
 **Commandes disponibles :**
+
   `--a add`   : Ajoute un nouveau contact avec -n (nom) et -p (téléphone)
+  
   `--a del`   : Supprime un contact existant avec -n
+  
   `--a put`   : Modifie le numéro d’un contact existant avec -n et -p
+  
   `--a get`   : Recherche un contact avec -n
+  
   `--a list`  : Affiche tous les contacts existants
+  
 
 **Utilisation :**
+```
 Test add
-  go run main.go --a "add" --n "Charlie" --p 0811223344
+  go run main.go --a "add" --n "Charlie" --p "0811223344"
 Test list
-go run main.go --a "list"
+  go run main.go --a "list"
 Test get
   go run main.go --a "get" --n "John_Doe"
 Test put
-  go run main.go --a "put" --n "John_Doe" --p 0600000000
+  go run main.go --a "put" --n "John_Doe" --p "0600000000"
 Test delete
   go run main.go --a "del" --n "John_Doe"
-
+```
 **Code :**
 ```go
 // menu choisit l’action à effectuer en fonction des arguments
