@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 )
 
 func main() {
@@ -30,15 +31,23 @@ func menu(a action, n name, p phoneNumber) string {
 		return addContact(n, p)
 	case "del":
 		return deleteContact(n)
-	// case "3":
-	// 	put_contact(n)
+	case "put":
+		return putContact(n, p)
 	case "get":
 		return getContact(n)
 	case "list":
 		return listContact()
-
+	default:
+		fmt.Println("Unknown action.")
+		os.Exit(1)
 	}
-	return ""
+	// export des os exit des fonction directement dans le menu pour que les tests restent independants (on peut pas return avec os exit)
+	if res == "contact already exists" || res == "contact not found" {
+		fmt.Fprintln(os.Stderr, "Error: ", res)
+		os.Exit(1)
+	}
+
+	return res
 }
 
 type name string
@@ -64,13 +73,13 @@ func addContact(n name, p phoneNumber) string {
 		return "contact already exists"
 	}
 	annuaire[n] = p
-	return fmt.Sprintf("Contact %q ajouté avec le numéro %q", n, p)
+	return fmt.Sprintf("Contact %q added with number %q", n, p)
 
 }
 
 func listContact() string {
 	var result string
-	result = "Liste des contacts :\n"
+	result = "Contact list :\n"
 	for numero, nom := range annuaire {
 		result += fmt.Sprintf("- %s : %s\n", numero, nom)
 	}
@@ -91,6 +100,14 @@ func deleteContact(n name) string {
 	if isExists(n) {
 		delete(annuaire, n)
 		return fmt.Sprintf("contact : %q has been deleted", n)
+	}
+	return "contact not found"
+}
+
+func putContact(n name, p phoneNumber) string {
+	if isExists(n) {
+		annuaire[n] = p
+		return fmt.Sprintf("the number of %q was updated: %q", n, p)
 	}
 	return "contact not found"
 }

@@ -14,7 +14,7 @@ func TestAddContact(t *testing.T) {
 			testPhone := phoneNumber("123456")
 			result := addContact(testName, testPhone)
 
-			expected := "Contact \"Test_User\" ajouté avec le numéro \"123456\""
+			expected := "Contact \"Test_User\" added with number \"123456\""
 			if result != expected {
 				t.Errorf("Expected: %q, got: %q", expected, result)
 			}
@@ -83,6 +83,45 @@ func TestGetContact(t *testing.T) {
 		})
 	})
 }
+
+func TestPutContact(t *testing.T) {
+	t.Run("Put contact scenarios", func(t *testing.T) {
+		setupAnnuaire()
+
+		t.Run("should update an existing contact's number", func(t *testing.T) {
+			existingName := name("John_Doe")
+			newPhone := phoneNumber("777888")
+
+			result := putContact(existingName, newPhone)
+
+			expected := fmt.Sprintf("the number of %q was updated: %q", existingName, newPhone)
+			if result != expected {
+				t.Errorf("Expected: %q, got: %q", expected, result)
+			}
+
+			if annuaire[existingName] != newPhone {
+				t.Errorf("Contact number was not updated correctly in annuaire")
+			}
+		})
+
+		t.Run("should fail to update a non-existent contact", func(t *testing.T) {
+			nonExistingName := name("Ghost_User")
+			newPhone := phoneNumber("000000")
+
+			result := putContact(nonExistingName, newPhone)
+
+			expected := fmt.Sprintf("contact not found", nonExistingName)
+			if result != expected {
+				t.Errorf("Expected: %q, got: %q", expected, result)
+			}
+
+			if _, exists := annuaire[nonExistingName]; exists {
+				t.Errorf("Non-existent contact was wrongly added to annuaire")
+			}
+		})
+	})
+}
+
 
 func setupAnnuaire() {
 	annuaire = map[name]phoneNumber{
