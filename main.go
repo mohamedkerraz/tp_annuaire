@@ -9,7 +9,7 @@ func main() {
 	// Déclaration des variables
 	var a action
 	var n name
-	var p phone_number
+	var p phoneNumber
 
 	flag.StringVar((*string)(&a), "a", "", "choose action")
 
@@ -24,18 +24,18 @@ func main() {
 	fmt.Println(res)
 }
 
-func menu(a action, n name, p phone_number) string {
+func menu(a action, n name, p phoneNumber) string {
 	switch a {
 	case "add":
-		return add_contact(n, p)
+		return addContact(n, p)
 	case "del":
-		return delete_contact(n)
+		return deleteContact(n)
 	// case "3":
 	// 	put_contact(n)
 	case "get":
-		return get_contact(n)
+		return getContact(n)
 	case "list":
-		return list_contact()
+		return listContact()
 
 	}
 	return ""
@@ -44,9 +44,9 @@ func menu(a action, n name, p phone_number) string {
 type name string
 type action string
 
-type phone_number string
+type phoneNumber string
 
-var annuaire = map[name]phone_number{
+var annuaire = map[name]phoneNumber{
 	"John_Doe": "012345",
 	"Jean_luc": "541235",
 }
@@ -58,7 +58,7 @@ func isExists(n name) bool {
 
 }
 
-func add_contact(n name, p phone_number) string {
+func addContact(n name, p phoneNumber) string {
 
 	if isExists(n) {
 		return "contact already exists"
@@ -68,7 +68,7 @@ func add_contact(n name, p phone_number) string {
 
 }
 
-func list_contact() string {
+func listContact() string {
 	var result string
 	result = "Liste des contacts :\n"
 	for numero, nom := range annuaire {
@@ -77,7 +77,7 @@ func list_contact() string {
 	return result
 }
 
-func get_contact(n name) string {
+func getContact(n name) string {
 
 	number, _ := annuaire[n]
 
@@ -87,7 +87,7 @@ func get_contact(n name) string {
 	return "contact not found"
 }
 
-func delete_contact(n name) string {
+func deleteContact(n name) string {
 	if isExists(n) {
 		delete(annuaire, n)
 		return fmt.Sprintf("contact : %q has been deleted", n)
